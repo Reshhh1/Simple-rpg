@@ -7,7 +7,7 @@ local DataService = require(ServerScriptService.Core.Data.DataService)
 local inventoryService = require(ServerScriptService.Core.Data.InventoryService)
 local equipmentService = require(ServerScriptService.Core.Data.EquipmentService)
 
-local ItemGenerator = require(ReplicatedStorage.Core.Services.MobDrop.ItemGenerator)
+local ItemGenerator = require(ServerScriptService.Core.Services.MobDrop.ItemGenerator)
 local playerStorages = ServerStorage.PlayersData
 local Remotes = ReplicatedStorage.Remotes
 

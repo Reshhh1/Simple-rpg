@@ -14,7 +14,7 @@ local WeaponConfig = require(ReplicatedStorage.Core.Data.ItemData)
 local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
 local ExpService = require(ServerScriptService.Core.Data.ExpService)
 local MobConfig = require(ServerScriptService.Core.Services.DropConfig)
-local MobDrop = require(ReplicatedStorage.Core.Services.MobDrop)
+local MobDrop = require(ServerScriptService.Core.Services.MobDrop)
 ---------------------------- Other -------------------------------
 local Remotes = ReplicatedStorage.Remotes
 local Debounces = {}
