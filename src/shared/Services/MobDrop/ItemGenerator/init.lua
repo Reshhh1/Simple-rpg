@@ -2,7 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local HttpService = game:GetService("HttpService")
 
-local InventoryService = require(ServerScriptService.Data.InventoryService)
+local InventoryService = require(ServerScriptService.Core.Data.InventoryService)
 
 local module = {}
 

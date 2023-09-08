@@ -1,21 +1,20 @@
 ---------------------------- Services -------------------------------
 local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ServerStorage = game:GetService("ServerStorage")
 local Debris = game:GetService("Debris")
 local Players = game:GetService("Players")
 
 ---------------------------- Modules -------------------------------
-local CalculateDamage = require(ServerScriptService.Services.Combat.CalculateDamage)
-local AnimationModule = require(ReplicatedStorage.Modules.AnimationModule)
-local DamageIndicator = require(ReplicatedStorage.Modules.DamageIndicator)
-local HitboxModule = require(ServerScriptService.Modules.HitboxModule)
-local M6DModule = require(ServerScriptService.Modules.Motor6DModule)
-local WeaponConfig = require(ReplicatedStorage.Data.Items)
-local SoundModule = require(ReplicatedStorage.Modules.SoundModule)
-local ExpService = require(ServerScriptService.Data.ExpService)
-local MobConfig = require(ServerScriptService.Services.DropConfig)
-local MobDrop = require(ReplicatedStorage.Services.MobDrop)
+local CalculateDamage = require(ServerScriptService.Core.Services.Combat.CalculateDamage)
+local AnimationModule = require(ReplicatedStorage.Core.Modules.AnimationModule)
+local DamageIndicator = require(ReplicatedStorage.Core.Modules.DamageIndicator)
+local HitboxModule = require(ServerScriptService.Core.Modules.HitboxModule)
+local M6DModule = require(ServerScriptService.Core.Modules.Motor6DModule)
+local WeaponConfig = require(ReplicatedStorage.Core.Data.ItemData)
+local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
+local ExpService = require(ServerScriptService.Core.Data.ExpService)
+local MobConfig = require(ServerScriptService.Core.Services.DropConfig)
+local MobDrop = require(ReplicatedStorage.Core.Services.MobDrop)
 ---------------------------- Other -------------------------------
 local Remotes = ReplicatedStorage.Remotes
 local Debounces = {}

@@ -1,9 +1,4 @@
 local Players =  game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local ServerScriptService = game:GetService("ServerScriptService")
-
-local HitboxModule = require(ServerScriptService.Modules.HitboxModule)
-local SoundModule = require(ReplicatedStorage.Modules.SoundModule)
 
 local module = {}
 module.__index = module

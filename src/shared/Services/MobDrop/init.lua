@@ -6,11 +6,11 @@ local ServerStorage = game:GetService("ServerStorage")
 local SoundService = game:GetService("SoundService")
 local Debris = game:GetService("Debris")
 
-local InventoryService = require(ServerScriptService.Data.InventoryService)
-local ParticleModule = require(ReplicatedStorage.Modules.ParticleModule)
-local ItemGenerator = require(ReplicatedStorage.Services.MobDrop.ItemGenerator)
-local MobConfig = require(ServerScriptService.Services.DropConfig)
-local WeldModule = require(ServerScriptService.Modules.WeldModule)
+local InventoryService = require(ServerScriptService.Core.Data.InventoryService)
+local ParticleModule = require(ReplicatedStorage.Core.Modules.ParticleModule)
+local ItemGenerator = require(ReplicatedStorage.Core.Services.MobDrop.ItemGenerator)
+local MobConfig = require(ServerScriptService.Core.Services.DropConfig)
+local WeldModule = require(ServerScriptService.Core.Modules.WeldModule)
 local itemReplicaStorage = ServerStorage.VFX.ItemReplica
 local Remotes = ReplicatedStorage.Remotes
 
@@ -32,17 +32,20 @@ module.chanceToDropItem = { 1, 1 }
 function module.new(mobName, position)
 	local self = setmetatable({}, module)
 	self.Mob = MobConfig[mobName]
-	self.Rarity = pickRandomRarity()
-	self.Model = ServerStorage.VFX.itemDrops[self.Rarity].ItemDrop:Clone()
-	self:raycastToGround(position)
-	self.Weapon = self:replicateAndPickItem(self.Mob.Drops)
-	Debris:AddItem(self.Model, 180)
-	ParticleModule.fromPart(self.Model, self.Model.A1:FindFirstChild("ParticleEmitter"))
+	if self.Mob ~= nil then
+		self.Rarity = pickRandomRarity()
+		self.Model = ServerStorage.VFX.itemDrops[self.Rarity].ItemDrop:Clone()
+		Debris:AddItem(self.Model, 180)
+		self:raycastToGround(position)
+		self.Weapon = self:replicateAndPickItem(self.Mob.Drops)
+		ParticleModule.fromPart(self.Model, self.Model.A1:FindFirstChild("ParticleEmitter"))
+
+		local ProximityPrompt = self.Model.ProximityPrompt
+		ProximityPrompt.Triggered:Connect(function(player)
+			self:onTrigger(player)
+		end)
+	end
 	
-	local ProximityPrompt = self.Model.ProximityPrompt
-	ProximityPrompt.Triggered:Connect(function(player)
-		self:onTrigger(player)
-	end)
 	return self
 end
 

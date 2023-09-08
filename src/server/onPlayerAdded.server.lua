@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local PhysicsService = game:GetService("PhysicsService")
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local equipmentService = require(ServerScriptService.Data.EquipmentService)
+local equipmentService = require(ServerScriptService.Core.Data.EquipmentService)
 
 local CollisionGroupPlayer = "Player"
 PhysicsService:RegisterCollisionGroup(CollisionGroupPlayer)

@@ -1,11 +1,10 @@
 local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
-local HttpService = game:GetService("HttpService")
 
-local DataService = require(ServerScriptService.Data.DataService)
-local ItemService = require(ServerScriptService.Services.ItemService)
-local ValueObject = require(ReplicatedStorage.Modules.ValueObject)
+local DataService = require(ServerScriptService.Core.Data.DataService)
+local ItemService = require(ServerScriptService.Core.Services.ItemService)
+local ValueObject = require(ReplicatedStorage.Core.Modules.ValueObject)
 
 local Remotes = ReplicatedStorage.Remotes
 
@@ -28,7 +27,7 @@ function module.replicateInventory(player)
 	local playerInventory = profile.Data.Inventory
 	local inventoryServer = ServerStorage.PlayersData:FindFirstChild(player.Name):WaitForChild("Inventory")
 	if inventoryServer then
-		for order, item in pairs(playerInventory) do
+		for _, item in pairs(playerInventory) do
 			module.replicateItemToStorage(item, inventoryServer)
 		end
 	end

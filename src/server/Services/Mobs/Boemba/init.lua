@@ -5,11 +5,11 @@ local ServerStorage = game:GetService("ServerStorage")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local AnimationModule = require(ReplicatedStorage.Modules.AnimationModule)
-local ParticleModule = require(ReplicatedStorage.Modules.ParticleModule)
-local HitboxModule = require(ServerScriptService.Modules.HitboxModule)
-local SoundModule = require(ReplicatedStorage.Modules.SoundModule)
-local MobConfig = require(ServerScriptService.Services.DropConfig)
+local AnimationModule = require(ReplicatedStorage.Core.Modules.AnimationModule)
+local ParticleModule = require(ReplicatedStorage.Core.Modules.ParticleModule)
+local HitboxModule = require(ServerScriptService.Core.Modules.HitboxModule)
+local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
+local MobConfig = require(ServerScriptService.Core.Services.DropConfig)
 local Mobs = require(script.Parent)
 
 local module = {}

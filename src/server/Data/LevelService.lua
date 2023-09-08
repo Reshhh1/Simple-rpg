@@ -5,9 +5,9 @@ local Debris = game:GetService("Debris")
 
 local Remotes = ReplicatedStorage.Remotes
 
-local LevelingConfig = require(ReplicatedStorage.Data.LevelingConfig)
-local SoundModule = require(ReplicatedStorage.Modules.SoundModule)
-local DataService = require(ServerScriptService.Data.DataService)
+local LevelingConfig = require(ReplicatedStorage.Core.Data.LevelingConfig)
+local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
+local DataService = require(ServerScriptService.Core.Data.DataService)
 
 local module = {}
 

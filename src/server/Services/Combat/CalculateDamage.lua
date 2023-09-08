@@ -1,9 +1,9 @@
 local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Util = require(ReplicatedStorage.Util.Loops)
+local Util = require(ReplicatedStorage.Core.Util.Loops)
 
-local EquipmentService = require(ServerScriptService.Data.EquipmentService)
+local EquipmentService = require(ServerScriptService.Core.Data.EquipmentService)
 
 local module = {}
 

@@ -1,7 +1,7 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 
-local ItemConfig = require(ReplicatedStorage.Data.Items)
+local ItemConfig = require(ReplicatedStorage.Core.Data.ItemData)
 
 local module = {}
 

@@ -1,6 +1,6 @@
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local Mobs = require(ServerScriptService.Services.Mobs)
+local Mobs = require(ServerScriptService.Core.Services.Mobs)
 
 local Spawners = game.Workspace.Spawners
 
