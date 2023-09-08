@@ -1,7 +1,6 @@
 local module = {}
 
-function module.findValueByKey(Table, targetKeys)
-	local result
+function module.findValueByKey(Table: table, targetKeys: table)
 	for key, value in pairs(Table) do
 		if key == targetKeys then
 			return value
