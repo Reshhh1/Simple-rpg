@@ -5,12 +5,14 @@ local ServerStorage = game:GetService("ServerStorage")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
-local AnimationModule = require(ReplicatedStorage.Modules.AnimationModule)
-local ParticleModule = require(ReplicatedStorage.Modules.ParticleModule)
-local HitboxModule = require(ServerScriptService.Modules.HitboxModule)
-local SoundModule = require(ReplicatedStorage.Modules.SoundModule)
-local MobConfig = require(ServerScriptService.Services.DropConfig)
+local AnimationModule = require(ReplicatedStorage.Core.Modules.AnimationModule)
+local ParticleModule = require(ReplicatedStorage.Core.Modules.ParticleModule)
+local HitboxModule = require(ServerScriptService.Core.Modules.HitboxModule)
+local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
+local MobConfig = require(ServerScriptService.Core.Services.DropConfig)
 local Mobs = require(script.Parent)
+
+local Animation = ServerStorage.Animations[script.Name]
 
 local module = {}
 module.__index = module
@@ -53,7 +55,7 @@ function module.new(cframe)
 	self.attackDistance = 8
 	self.lastAttack = os.clock()
 	
-	self.walkTrack = self.Humanoid:WaitForChild("Animator"):LoadAnimation(script.Animations.Walking)
+	self.walkTrack = self.Humanoid:WaitForChild("Animator"):LoadAnimation(Animation:FindFirstChild("Walking"))
 	
 	self.Humanoid.Died:Connect(function()
 		self.BillBoard:Destroy()
@@ -105,7 +107,7 @@ function module:init()
 						local playerCharacter = nearestPlayer.Character or nearestPlayer.CharacterAdded:Wait()
 						self.Root.CFrame = CFrame.lookAt(self.Root.Position, Vector3.new(playerCharacter.PrimaryPart.Position.X, self.Root.Position.Y, playerCharacter.PrimaryPart.Position.Z))
 
-						local AnimationTrack = AnimationModule.getAnimationtrackInstance(script.Animations.Attack:Clone(), self.Character)
+						local AnimationTrack = AnimationModule.getAnimationtrackInstance(Animation:FindFirstChild("Attack"), self.Character)
 						if AnimationTrack then
 							AnimationTrack:Play()
 							AnimationTrack:GetMarkerReachedSignal("Jump"):Once(function()

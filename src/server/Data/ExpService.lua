@@ -3,9 +3,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Remotes = ReplicatedStorage.Remotes
 
-local DataService = require(ServerScriptService.Data.DataService)
-local LevelService = require(ServerScriptService.Data.LevelService)
-local LevelingConfig = require(ReplicatedStorage.Data.LevelingConfig)
+local DataService = require(ServerScriptService.Core.Data.DataService)
+local LevelService = require(ServerScriptService.Core.Data.LevelService)
+local LevelingConfig = require(ReplicatedStorage.Core.Data.LevelingConfig)
 
 local module = {}
 

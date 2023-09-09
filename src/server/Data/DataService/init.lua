@@ -18,7 +18,7 @@ local dataTemplate = {
 	}
 }
 
-local ProfileService = require(ServerScriptService.Libs.ProfileService)
+local ProfileService = require(ServerScriptService.Core.Libs.ProfileService)
 local ProfileStore = ProfileService.GetProfileStore("DEVELOPMENT", dataTemplate) -- DEVELOPMENT / RELEASE
 
 local module = {}
