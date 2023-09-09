@@ -22,7 +22,7 @@ function module.newWeapon(player)
 		InventoryService.moveToInventory(player, uuid)
 	end
 end
-
+-- test
 function createUUIDItem()
 	local uuid = generateUUID()
 	local uuidInstance = Instance.new("Folder")
