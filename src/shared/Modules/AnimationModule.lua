@@ -25,16 +25,6 @@ function AnimationModule.getAnimationTrack(animationId, character) : AnimationTr
 	end
 end
 
-function AnimationModule.getAnimationtrackInstance(animation, character): AnimationTrack
-	if character then
-		local humanoid = character:WaitForChild("Humanoid")
-		if humanoid.Health > 0 then
-			local Animator = humanoid:WaitForChild("Animator")
-			return Animator:LoadAnimation(animation)
-		end
-	end
-end
-
 function createAnimation(animationId) : Animation
 	local animation = Instance.new("Animation")
 	animation.AnimationId = "rbxassetid://".. tostring(animationId)
