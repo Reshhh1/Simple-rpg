@@ -1,10 +1,11 @@
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 local TweenService = game:GetService("TweenService")
 local Debris = game:GetService("Debris")
 
 local module = {}
 
-local TweenInfoObject = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out,0, true)
+local TweenInfoObject = TweenInfo.new(0.5, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out,0, true)
 
 --[[
 	Function to display damage indicators on the character
@@ -15,18 +16,19 @@ local TweenInfoObject = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDir
 function module.Show(damage, character, emitParticles)
 	local HumanoidRootPart = character:WaitForChild("HumanoidRootPart")
 	
-	local damageIndicator = script.DamageIndicator:Clone()
+	local damageIndicator = ReplicatedStorage.GUI:FindFirstChild("DamageIndicator"):Clone()
 	damageIndicator.TextLabel.Text = tostring(damage)
 	damageIndicator.Parent = HumanoidRootPart
 	
 	damageIndicator.Size = UDim2.new(0,0,0,0)
-	damageIndicator.StudsOffsetWorldSpace = Vector3.new(math.random(-15,15) / 10, math.random(-15,15) / 10, math.random(-15,15) / 10)
+	-- Random damage indicator placement
+	--damageIndicator.StudsOffsetWorldSpace = Vector3.new(math.random(-15,15) / 10, math.random(-15,15) / 10, math.random(-15,15) / 10)
 	
 	if emitParticles then
 		spawnParticle(HumanoidRootPart)	
 	end
 	
-	local tween = TweenService:Create(damageIndicator, TweenInfoObject, { Size = UDim2.new(2,0,2,0)})
+	local tween = TweenService:Create(damageIndicator, TweenInfoObject, { Size = UDim2.new(1.5,0,1.5,0)})
 	tween:Play()
 	
 	tween.Completed:Connect(function()

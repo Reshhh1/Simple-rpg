@@ -4,7 +4,6 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Debris = game:GetService("Debris")
 local Players = game:GetService("Players")
 
----------------------------- Modules -------------------------------
 local CalculateDamage = require(ServerScriptService.Core.Services.Combat.CalculateDamage)
 local AnimationModule = require(ReplicatedStorage.Core.Modules.AnimationModule)
 local DamageIndicator = require(ReplicatedStorage.Core.Modules.DamageIndicator)
@@ -13,15 +12,14 @@ local M6DModule = require(ServerScriptService.Core.Modules.Motor6DModule)
 local WeaponConfig = require(ReplicatedStorage.Core.Data.ItemData)
 local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
 local ExpService = require(ServerScriptService.Core.Data.ExpService)
-local MobConfig = require(ServerScriptService.Core.Services.DropConfig)
+local MobConfig = require(ServerScriptService.Core.Data.MobConfig)
 local MobDrop = require(ServerScriptService.Core.Services.MobDrop)
----------------------------- Other -------------------------------
+
 local Remotes = ReplicatedStorage.Remotes
 local Debounces = {}
 local Combos = {}
-
----------------------------- Properties -------------------------------
 local Size = Vector3.new(6,8,6)
+
 --[[
 	Function checks if the character has a tool and returns that
 	@param character(Instance): The character thats being checked through
@@ -29,7 +27,6 @@ local Size = Vector3.new(6,8,6)
 function getTool(character)
 	for _,child in pairs(character:GetChildren()) do
 		if child:isA("Tool") then
-			print("RUNNING")
 			return child
 		end
 	end
@@ -49,25 +46,22 @@ function giveExp(player, mobCharacter)
 end
 
 Remotes.Server.M1Event.OnServerEvent:Connect(function(player)
-	print("Arrived")
 	if not Debounces[player] then Debounces[player] = false end
 
 	local Character = player.Character or player.CharacterAdded:Wait()
 	local tool = getTool(Character)
 	
 	if not Debounces[player] and tool then
-		print("Arrived 2")
 		Debounces[player] = true
-		local ToolWeapon = WeaponConfig.Items[tool.Name]
+		local ToolConfig = WeaponConfig.Items[tool.Name]
 		if not Combos[player] then Combos[player] = 0 end
-		Combos[player] = (Combos[player] % ToolWeapon.MaxCombo) + 1
+		Combos[player] = (Combos[player] % ToolConfig.MaxCombo) + 1
 		
-		SoundModule.playSoundInstance(script.Swing:Clone(), Character)
+		SoundModule.new(ToolConfig.Sounds.swing,"Swing", Character)
 		
-		local Animation = AnimationModule.new(14146386916, Character)
+		local Animation = AnimationModule.new(ToolConfig.Animations.attack, Character)
 		
-		if Animation.AnimationTrack and ToolWeapon then
-			print("Arrived 3")
+		if Animation.AnimationTrack and ToolConfig then
 			Animation.AnimationTrack:Play()
 
 			M6DModule.new("Handle",Character:WaitForChild("Right Arm"),tool:WaitForChild("Handle"),Character:WaitForChild("Right Arm"))
@@ -91,10 +85,10 @@ Remotes.Server.M1Event.OnServerEvent:Connect(function(player)
 					and not Players:GetPlayerFromCharacter(child.Parent) then
 						table.insert(hits, child.Parent)
 						local enemyCharacter = child.Parent
-						SoundModule.playSoundInstance(script.Hit:Clone(), Character)
+						SoundModule.new(ToolConfig.Sounds.hit,"Hit", Character)
 						enemyHumanoid:TakeDamage(damage)
 						DamageIndicator.Show(damage, enemyCharacter, true)
-						if enemyHumanoid.Health <= 0 then --died
+						if enemyHumanoid.Health <= 0 then
 							giveExp(player, enemyCharacter)
 							local isDropingItem = MobDrop.isDroppingItem()
 							if isDropingItem == true then
@@ -105,7 +99,7 @@ Remotes.Server.M1Event.OnServerEvent:Connect(function(player)
 				end
 			end)
 		end
-		task.wait(ToolWeapon.Cooldown[Combos[player]])
+		task.wait(ToolConfig.Cooldown[Combos[player]])
 		Debounces[player] = false
 	end
 end)

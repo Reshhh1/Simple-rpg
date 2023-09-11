@@ -1,7 +1,7 @@
 local Debris = game:GetService("Debris")
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 local ServerStorage = game:GetService("ServerStorage")
+local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 
@@ -9,10 +9,10 @@ local AnimationModule = require(ReplicatedStorage.Core.Modules.AnimationModule)
 local ParticleModule = require(ReplicatedStorage.Core.Modules.ParticleModule)
 local HitboxModule = require(ServerScriptService.Core.Modules.HitboxModule)
 local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
-local MobConfig = require(ServerScriptService.Core.Services.DropConfig)
+local MobConfig = require(ServerScriptService.Core.Data.MobConfig)
 local Mobs = require(script.Parent)
 
-local Animation = ServerStorage.Animations[script.Name]
+local MobInfo = MobConfig[script.Name]
 
 local module = {}
 module.__index = module
@@ -25,13 +25,12 @@ function module.new(cframe)
 	
 	self.Name = module.Name
 	self.Origin = cframe
-	local mobInfo = MobConfig[self.Name]
 	
 	--Base info
 	self.baseHealth = 50
 	self.baseDamage = 5
-	self.minLevel = mobInfo.minLevel
-	self.maxLevel = mobInfo.maxLevel
+	self.minLevel = MobInfo.minLevel
+	self.maxLevel = MobInfo.maxLevel
 	self.walkSpeed = 10
 	
 	self.Level = math.random(self.minLevel, self.maxLevel)
@@ -40,8 +39,8 @@ function module.new(cframe)
 	self.Health = self.baseDamage * (1 + (self.Level * 0.5))
 		
 	self.Character = Mobs.Models[module.Name]:Clone()
-	self.Root = self.Character.PrimaryPart
 	self.Character:SetPrimaryPartCFrame(cframe)
+	self.Root = self.Character.PrimaryPart
 	self.Character.Parent = game.Workspace.misc
 	
 	self.BillBoard = self.Character:FindFirstChild("Head").BillboardGui
@@ -55,14 +54,21 @@ function module.new(cframe)
 	self.attackDistance = 8
 	self.lastAttack = os.clock()
 	
-	self.walkTrack = self.Humanoid:WaitForChild("Animator"):LoadAnimation(Animation:FindFirstChild("Walking"))
+	self.walkTrack = AnimationModule.getAnimationTrack(MobInfo.Animations.Walking, self.Character)
 	
 	self.Humanoid.Died:Connect(function()
 		self.BillBoard:Destroy()
 		local Particle = ServerStorage.VFX.Particles.MobKill:Clone()
 		ParticleModule.new(Particle, 10, self.Root)
-		SoundModule.playSoundInstance(script.Sounds.Death:Clone(), Particle)
+		SoundModule.new(MobInfo.Sounds.Death,"Death", Particle)
 		Debris:AddItem(self.Character, 5)
+
+		for _, BasePart in pairs(self.Character:GetChildren()) do
+			if BasePart:IsA("BasePart") or BasePart:IsA("Decal") then
+				local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+				TweenService:Create(BasePart, tweenInfo, { Transparency = 1}):Play()
+			end
+		end
 	end)
 	
 	self:init()
@@ -107,11 +113,11 @@ function module:init()
 						local playerCharacter = nearestPlayer.Character or nearestPlayer.CharacterAdded:Wait()
 						self.Root.CFrame = CFrame.lookAt(self.Root.Position, Vector3.new(playerCharacter.PrimaryPart.Position.X, self.Root.Position.Y, playerCharacter.PrimaryPart.Position.Z))
 
-						local AnimationTrack = AnimationModule.getAnimationtrackInstance(Animation:FindFirstChild("Attack"), self.Character)
+						local AnimationTrack = AnimationModule.getAnimationTrack(MobInfo.Animations.Attack, self.Character)
 						if AnimationTrack then
 							AnimationTrack:Play()
 							AnimationTrack:GetMarkerReachedSignal("Jump"):Once(function()
-								SoundModule.playSoundInstance(script.Sounds.Jump:Clone(), self.Character)
+								SoundModule.new(MobInfo.Sounds.Jump,"Jump", self.Character)
 							end)
 							AnimationTrack:GetMarkerReachedSignal("damage"):Once(function()
 								if self.Humanoid.Health > 0 then
@@ -143,7 +149,7 @@ function module._createHitbox(self)
 		if enemyHumanoid and not table.find(hits, child.Parent) and Players:GetPlayerFromCharacter(child.Parent) then
 			table.insert(hits, child.Parent)
 			local damage = math.random(self.minDamage, self.maxDamage)
-			SoundModule.playSoundInstance(script.Sounds.Hit:Clone(), child.Parent)
+			SoundModule.new(MobInfo.Sounds.Hit, "Hit", child.Parent)
 			enemyHumanoid:TakeDamage(damage)
 		end
 	end

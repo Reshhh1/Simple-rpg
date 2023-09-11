@@ -4,8 +4,8 @@ local module = {}
 
 module.DEFAULT_PARENT = workspace.misc
 
-function module.new(Emitter: ParticleEmitter, emitAmount: number)
-	Emitter.Parent = module.DEFAULT_PARENT
+function module.new(Emitter: ParticleEmitter, emitAmount: number, Parent)
+	Emitter.Parent = Parent
 	Emitter:Emit(emitAmount)
 	Debris:AddItem(Emitter, 1)
 end

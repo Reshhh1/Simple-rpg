@@ -9,6 +9,7 @@ local LevelingConfig = require(ReplicatedStorage.Core.Data.LevelingConfig)
 local SoundModule = require(ReplicatedStorage.Core.Modules.SoundModule)
 local DataService = require(ServerScriptService.Core.Data.DataService)
 
+local LEVELUP_SOUNDID = 5940919319
 local module = {}
 
 function module.checklevelup(player)
@@ -33,7 +34,7 @@ end
 
 function onLevelUp(player)
 	local Character = player.Character or player.CharacterAdded:Wait()
-	SoundModule.playSoundInstance(script.Sounds.LevelUp:Clone(), Character)
+	SoundModule.new(LEVELUP_SOUNDID, "LevelUp", Character)
 	
 	local Particle = ServerStorage.VFX.Particles:WaitForChild("Levelup"):Clone()
 	Particle.Parent = Character:WaitForChild("HumanoidRootPart")
